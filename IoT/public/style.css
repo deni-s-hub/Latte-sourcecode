@@ -1,0 +1,1082 @@
+:root {
+    --bg-color: #F8F5EF;
+    --sidebar-bg-color: #EFEBE5;
+    --card-bg-color: #FFFFFF;
+    --text-primary: #1C1C1C;
+    --text-secondary: #7A7A7A;
+    --border-color: #EAEAEA;
+    --green-accent: #2A6F2E;
+    --orange-accent: #E86A33;
+    --blue-accent: #4A90E2;
+    --red-accent: #D32F2F;
+    --font-family: 'Poppins', sans-serif;
+}
+
+body {
+    font-family: var(--font-family);
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    margin: 0;
+    overflow-x: hidden;
+}
+
+#app-container {
+    display: flex;
+    position: relative;
+    width: 100%;
+}
+
+.main-content {
+    flex-grow: 1;
+    padding: 30px;
+    padding-top: 100px;
+    transition: margin-left 0.3s ease-in-out;
+    box-sizing: border-box;
+}
+
+.top-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 70px;
+    background-color: var(--bg-color);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 30px;
+    box-sizing: border-box;
+    z-index: 990;
+}
+
+.top-bar-left,
+.top-bar-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.menu-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-primary);
+    padding: 0;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.5em;
+    font-weight: 700;
+    text-decoration: none;
+    color: var(--text-primary);
+}
+
+.logo img {
+    height: 30px;
+}
+
+.notification-icon-wrapper {
+    position: relative;
+    color: var(--text-secondary);
+    cursor: pointer;
+}
+
+.notification-badge {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: 8px;
+    height: 8px;
+    background-color: var(--orange-accent);
+    border-radius: 50%;
+    border: 2px solid var(--bg-color);
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-profile img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-name {
+    font-weight: 600;
+}
+
+.user-role {
+    font-size: 0.8em;
+    color: var(--text-secondary);
+}
+
+.sidebar {
+    width: 250px;
+    background-color: var(--sidebar-bg-color);
+    height: 100vh;
+    border-right: 1px solid var(--border-color);
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+    z-index: 1000;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar.open {
+    transform: translateX(0);
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 15px 0 30px;
+    height: 70px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.nav-menu {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+    flex-grow: 1;
+}
+
+.nav-item a {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 30px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.nav-item a:hover {
+    color: var(--text-primary);
+}
+
+.nav-item a.active {
+    background-color: var(--green-accent);
+    color: white;
+    border-radius: 8px;
+    margin: 5px 15px;
+    padding: 15px 15px;
+}
+
+.logout-item {
+    margin-top: auto;
+    padding-bottom: 20px;
+}
+
+.notification-dropdown {
+    position: fixed;
+    top: 65px;
+    right: 30px;
+    width: 350px;
+    max-height: 400px;
+    background-color: var(--card-bg-color);
+    border-radius: 8px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--border-color);
+    z-index: 1001;
+    overflow-y: auto;
+}
+
+body.noscroll {
+    overflow: hidden;
+}
+
+.notification-dropdown-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.notification-dropdown-header h3 {
+    margin: 0;
+    font-size: 1em;
+}
+
+.notification-list-dropdown {
+    display: flex;
+    flex-direction: column;
+}
+
+.notification-list-item {
+    padding: 10px 15px;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.9em;
+    text-decoration: none;
+    color: var(--text-primary);
+    display: block;
+}
+
+.notification-list-item:last-child {
+    border-bottom: none;
+}
+
+.notification-list-item:hover {
+    background-color: var(--bg-color);
+}
+
+.notification-list-item small {
+    color: var(--text-secondary);
+    display: block;
+    margin-top: 4px;
+}
+
+.notification-placeholder {
+    padding: 40px;
+    text-align: center;
+    color: var(--text-secondary);
+}
+
+.notification-dropdown-footer {
+    padding: 10px;
+    text-align: center;
+    background-color: var(--bg-color);
+}
+
+.view-all-link {
+    color: var(--green-accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.page {
+    display: none;
+}
+
+.page.active {
+    display: block;
+}
+
+.page-header {
+    margin-bottom: 30px;
+}
+
+.page-title {
+    font-size: 2.5em;
+    font-weight: 700;
+    margin: 0;
+}
+
+.page-subtitle {
+    color: var(--text-secondary);
+    margin: 5px 0 0 0;
+}
+
+.card-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.data-card {
+    background-color: var(--card-bg-color);
+    border-radius: 16px;
+    padding: 25px;
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--border-color);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card-link:hover .data-card {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.card-icon-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 2px dashed var(--border-color);
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+.card-icon {
+    font-size: 1.5em;
+}
+
+.card-title {
+    font-weight: 600;
+}
+
+.card-pln {
+    border-top: 4px solid var(--orange-accent);
+}
+
+.card-pln .card-icon,
+.card-pln .card-title {
+    color: var(--orange-accent);
+}
+
+.card-turbin {
+    border-top: 4px solid var(--green-accent);
+}
+
+.card-turbin .card-icon,
+.card-turbin .card-title {
+    color: var(--green-accent);
+}
+
+.card-rumah {
+    border-top: 4px solid var(--blue-accent);
+}
+
+.card-rumah .card-icon,
+.card-rumah .card-title {
+    color: var(--blue-accent);
+}
+
+.card-battery {
+    border-top: 4px solid var(--blue-accent);
+}
+
+.card-battery .card-icon,
+.card-battery .card-title {
+    color: var(--blue-accent);
+}
+
+.card-notification-summary {
+    border-top: 4px solid var(--text-secondary);
+}
+
+.card-notification-summary .card-icon,
+.card-notification-summary .card-title {
+    color: var(--text-secondary);
+}
+
+.notification-summary-text {
+    font-weight: 500;
+    text-align: center;
+    font-size: 1.2em;
+}
+
+.card-status {
+    border-top: 4px solid var(--text-secondary);
+    cursor: pointer;
+}
+
+.card-status.online {
+    border-top-color: var(--green-accent);
+}
+
+.card-status.offline {
+    border-top-color: var(--red-accent);
+}
+
+.card-status .card-icon,
+.card-status .card-title {
+    color: var(--text-secondary);
+}
+
+.status-indicator-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px 0;
+}
+
+.status-indicator {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+}
+
+.status-indicator.online {
+    background-color: var(--green-accent);
+}
+
+.status-indicator.offline {
+    background-color: var(--red-accent);
+}
+
+.status-text {
+    font-size: 1.8em;
+    font-weight: 600;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.card-status,
+.card-notification-summary {
+    grid-column: 1 / -1;
+}
+
+.main-value {
+    font-size: 2.5em;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.unit {
+    font-size: 0.5em;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-left: 5px;
+}
+
+.card-content.detail-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.2em;
+    font-weight: 500;
+}
+
+.detail-row span:first-child {
+    color: var(--text-secondary);
+}
+
+.detail-row .unit {
+    font-size: 0.8em;
+}
+
+.sub-value-row {
+    display: flex;
+    justify-content: flex-end;
+    font-size: 1.2em;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.progress-bar-container {
+    width: 100%;
+    background-color: #E0E0E0;
+    border-radius: 10px;
+    height: 25px;
+    position: relative;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(to right, #82E1C2, #39A77F);
+    border-radius: 10px;
+    transition: width 0.5s ease-in-out;
+}
+
+.progress-bar-text {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-weight: 600;
+}
+
+.notification-page-controls {
+    margin-bottom: 20px;
+    text-align: right;
+}
+
+.clear-button {
+    background-color: var(--orange-accent);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.clear-button:hover {
+    background-color: #E65100;
+}
+
+.notification-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.notification-card {
+    background-color: var(--card-bg-color);
+    border-left: 5px solid var(--orange-accent);
+    border-radius: 8px;
+    padding: 15px 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    transition: box-shadow 0.2s;
+    text-decoration: none;
+    color: var(--text-primary);
+    display: block;
+}
+
+.notification-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.maintenance-section,
+.settings-section {
+    background-color: var(--card-bg-color);
+    border-radius: 16px;
+    padding: 25px;
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--border-color);
+    margin-bottom: 30px;
+}
+
+.settings-section h2,
+.maintenance-section h2 {
+    font-size: 1.5em;
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.schedule-group h3,
+.corrective-case h4 {
+    font-size: 1.2em;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.task-list,
+.solution-steps ol {
+    padding-left: 20px;
+    color: var(--text-secondary);
+}
+
+.corrective-case {
+    margin-top: 20px;
+}
+
+.setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.setting-item label {
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.setting-item span {
+    font-weight: 600;
+}
+
+.action-button {
+    background: var(--green-accent);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    margin-top: 20px;
+}
+
+.action-button:hover {
+    opacity: 0.9;
+}
+
+.hidden {
+    display: none !important;
+}
+
+#auth-container {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--bg-color);
+}
+
+.auth-card {
+    background-color: var(--card-bg-color);
+    padding: 30px 40px;
+    border-radius: 16px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.auth-logo {
+    margin-bottom: 20px;
+}
+
+.auth-card h2 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 25px;
+}
+
+.auth-card input {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 1em;
+}
+
+.auth-card button {
+    width: 100%;
+    padding: 12px;
+    background: var(--green-accent);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.auth-card button:hover {
+    opacity: 0.9;
+}
+
+.auth-card p {
+    margin-top: 20px;
+    font-size: 0.9em;
+}
+
+.auth-card a {
+    color: var(--green-accent);
+    font-weight: 500;
+    text-decoration: none;
+}
+
+@media (max-width: 992px) {
+    .menu-toggle {
+        display: block;
+    }
+    .main-content {
+        margin-left: 0 !important;
+    }
+    .user-profile .user-info {
+        display: none;
+    }
+}
+
+/* Styling untuk Kontainer Grafik */
+.chart-container {
+    margin-bottom: 30px;
+    margin-top: 30px;
+    padding: 20px;
+}
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+.chart-header h4 {
+    margin: 0;
+    font-size: 1.2em;
+}
+.filter-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.filter-controls input {
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+}
+.filter-controls button {
+    padding: 8px 15px;
+    background-color: var(--green-accent);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+.chart-canvas-wrapper {
+    position: relative;
+    height: 400px; /* Anda bisa sesuaikan nilainya, misal 350px atau 450px */
+    width: 100%;
+}
+.filter-controls select {
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background-color: white;
+}
+/* Styling untuk Tabel Data Historis */
+.history-table-container {
+    margin-top: 30px;
+}
+.history-table-container h4 {
+    font-size: 1.2em;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+.table-wrapper {
+    width: 100%;
+    max-height: 400px; /* Batasi tinggi tabel agar bisa di-scroll */
+    overflow-y: auto;
+}
+.history-table-container table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9em;
+}
+.history-table-container th, .history-table-container td {
+    padding: 10px 15px;
+    border-bottom: 1px solid var(--border-color);
+    text-align: left;
+}
+.history-table-container thead {
+    background-color: var(--sidebar-bg-color);
+    position: sticky; /* Membuat header tabel tetap di atas saat scroll */
+    top: 0;
+}
+.history-table-container tbody tr:nth-child(even) {
+    background-color: var(--bg-color);
+}
+/* Styling untuk Filter Kolom Tabel */
+.column-filter-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
+    font-size: 0.9em;
+    align-items: center;
+}
+.column-filter-controls label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+}
+/* Styling untuk Kontainer Grafik Analisis */
+.analysis-chart-container {
+    margin-top: 30px;
+}
+#download-pdf-button {
+    padding: 8px 15px;
+    background-color: #555; /* Warna berbeda agar menonjol */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+.data-card.alert-active {
+    background-color: #ffe0e0; /* Warna merah muda terang */
+    border-left: 5px solid #ff4d4d; /* Garis merah di kiri */
+    transition: background-color 0.3s ease-in-out, border-left-color 0.3s ease-in-out;
+}
+.historical-filters {
+    padding: 15px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 10px;
+}
+
+.filter-group {
+    display: flex;
+    gap: 10px;
+}
+
+.filter-btn {
+    padding: 8px 15px;
+    border: 1px solid var(--border-color);
+    background-color: transparent;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.filter-btn:hover {
+    background-color: var(--sidebar-bg-color);
+}
+
+.filter-btn.active {
+    background-color: var(--green-accent);
+    color: white;
+    border-color: var(--green-accent);
+}
+
+.custom-filter-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.custom-filter-controls.hidden {
+    display: none;
+}
+/* ========================================================
+    ATURAN GRID FINAL (HAPUS SEMUA YANG LAMA, GANTI DENGAN INI)
+   ======================================================== */
+
+.dashboard-grid {
+    display: grid;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+/* Kelas untuk mengatur jumlah kolom secara eksplisit */
+.grid-cols-1 {
+    grid-template-columns: 1fr;
+}
+.grid-cols-2 {
+    grid-template-columns: 1fr 1fr;
+}
+.grid-cols-3 {
+    grid-template-columns: repeat(3, 1fr);
+}
+.grid-cols-flexible {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+/* Aturan Responsive */
+@media (max-width: 992px) {
+    .grid-cols-3 { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+    .grid-cols-2 { grid-template-columns: 1fr; }
+}
+
+.data-card.alert-active .card-icon-header .card-icon,
+.data-card.alert-active .card-icon-header .card-title {
+    color: #D32F2F; /* Warna merah yang konsisten */
+}
+
+.historical-analysis-wrapper {
+    position: relative; /* Penting agar overlay bisa diposisikan di dalamnya */
+}
+
+.loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(248, 245, 239, 0.7); /* Warna semi-transparan, sesuaikan dengan --bg-color Anda */
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 16px;
+    backdrop-filter: blur(2px); /* Efek blur (opsional, tapi keren) */
+}
+
+.loading-overlay.hidden {
+    display: none;
+}
+
+/* Animasi Spinner dari CSS murni */
+.spinner {
+    border: 5px solid #E0E0E0; /* Abu-abu terang */
+    border-top: 5px solid var(--green-accent); /* Hijau */
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+@media (max-width: 768px) {
+    
+    /* 1. Perbaikan Filter Bar */
+    .historical-filters {
+        flex-direction: column;
+        align-items: stretch; /* Membuat semua item selebar kontainer */
+        gap: 15px;
+    }
+
+    .filter-group {
+        justify-content: center;
+    }
+
+    .custom-filter-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .custom-filter-controls input,
+    .custom-filter-controls select,
+    .custom-filter-controls button {
+        width: 100%;
+        box-sizing: border-box; /* Memastikan padding tidak membuat lebar berlebih */
+    }
+
+    /* 2. Membuat Tabel Bisa di-scroll ke Samping */
+    .table-wrapper {
+        overflow-x: auto; /* Ini adalah kunci utamanya */
+        border: 1px solid var(--border-color); /* Tambah border agar terlihat jelas */
+        border-radius: 8px;
+    }
+
+    /* 3. Menyesuaikan Ukuran Judul */
+    #dashboard .page-title, 
+    #dashboard .section-title {
+        font-size: 1.8em;
+    }
+    .dashboard-grid.grid-cols-3 {
+        grid-template-columns: 1fr; /* Ubah menjadi satu kolom */
+    }
+
+    /* Memastikan setiap kartu mengambil lebar penuh */
+    .dashboard-grid .data-card {
+        width: 100%;
+        box-sizing: border-box; /* Penting untuk padding */
+    }
+
+    /* Sesuaikan padding dan margin agar tidak terlalu sempit */
+    .main-content {
+        padding: 15px;
+    }
+
+    .data-card {
+        margin-bottom: 20px; /* Tambah jarak antar kartu */
+    }
+    #beranda .page-title {
+        font-size: 1.8em; /* Kecilkan ukuran judul */
+        white-space: normal; /* Biarkan teks wrapping */
+        word-break: break-word; /* Pecah kata jika terlalu panjang */
+    }
+
+    /* Layout untuk Grid Live Monitoring (PLN, Turbin, Panel Surya, Baterai) */
+    .dashboard-grid.grid-cols-2,
+    .dashboard-grid.grid-cols-3 { /* Terapkan juga untuk grid yang lain */
+        grid-template-columns: 1fr; /* Jadi satu kolom */
+        gap: 20px; /* Jarak antar kartu */
+    }
+
+    .data-card {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    /* Penyesuaian khusus untuk konten di dalam kartu Live Monitoring (PLN, Turbin, Panel Surya) */
+    .data-card .realtime-item {
+        flex-direction: column; /* Konten di dalam item (misal Daya: XXX watt) tersusun ke bawah */
+        align-items: flex-start; /* Sejajarkan ke kiri */
+        margin-bottom: 10px; /* Jarak antar baris info */
+    }
+
+    .data-card .realtime-item span:first-child {
+        margin-bottom: 5px; /* Jarak antara label dan nilai */
+        font-weight: 500;
+    }
+
+    /* Penyesuaian untuk kartu Baterai */
+    .battery-info {
+        flex-direction: column; /* Suhu dan progress bar ke bawah */
+        align-items: flex-start;
+    }
+
+    .battery-info .battery-temp {
+        margin-bottom: 10px; /* Jarak antara suhu dan progress bar */
+    }
+
+    .battery-progress-container {
+        width: 100%; /* Progress bar ambil lebar penuh */
+    }
+
+    /* Sidebar dan Overlay */
+    .sidebar {
+        width: 250px; /* Atur lebar sidebar saat terbuka */
+        transform: translateX(-100%); /* Sembunyikan default */
+        position: fixed; /* Penting agar tidak scroll dengan konten */
+        top: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 1000; /* Pastikan di atas semua */
+        transition: transform 0.3s ease-out;
+    }
+
+    .sidebar.active {
+        transform: translateX(0); /* Tampilkan saat aktif */
+    }
+
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease-out;
+    }
+
+    .overlay.active {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    /* Icon menu di top bar */
+    .top-bar .menu-icon {
+        display: block; /* Tampilkan icon hamburger */
+    }
+
+    .top-bar .logo-title {
+        margin-left: 10px; /* Sedikit jarak dari icon menu */
+    }
+}

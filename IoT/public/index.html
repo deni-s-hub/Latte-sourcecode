@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LATTE Dashboard</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="logo-tim.png" type="image/png">
+</head>
+<body>
+    <div id="app-container" class="hidden">
+        
+        <header class="top-bar">
+            <div class="top-bar-left">
+                <button class="menu-toggle" id="menu-toggle-top">
+                    <span class="material-symbols-rounded">menu</span>
+                </button>
+                <a href="#beranda" class="logo" id="logo-link">
+                    <img src="logo-tim.png" alt="LATTE Logo">
+                    <span>LATTE</span>
+                </a>
+            </div>
+            <div class="top-bar-right">
+                <div class="notification-icon-wrapper" id="notification-bell">
+                    <span class="material-symbols-rounded">notifications</span>
+                    <span class="notification-badge hidden" id="notification-badge"></span>
+                </div>
+                <div class="user-profile">
+                    <img src="https://i.pravatar.cc/40?img=3" alt="User Avatar">
+                    <div class="user-info">
+                        <span class="user-name" id="akun-username-topbar">User</span>
+                        <span class="user-role">Admin</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <img src="logo-tim.png" alt="LATTE Logo">
+                    <span>LATTE</span>
+                </div>
+                <button class="menu-toggle" id="sidebar-close-button"><span class="material-symbols-rounded">close</span></button>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="#beranda" class="nav-link active"><span class="material-symbols-rounded nav-icon">home</span> Beranda</a></li>
+                <li class="nav-item"><a href="#dashboard" class="nav-link"><span class="material-symbols-rounded nav-icon">dashboard</span> Dashboard</a></li>
+                <li class="nav-item"><a href="#notifikasi" class="nav-link"><span class="material-symbols-rounded nav-icon">list_alt</span> Riwayat Notifikasi</a></li>
+                <li class="nav-item"><a href="#maintenance" class="nav-link"><span class="material-symbols-rounded nav-icon">build</span> Panduan Perawatan</a></li>
+                <li class="nav-item"><a href="#pengaturan" class="nav-link"><span class="material-symbols-rounded nav-icon">settings</span> Pengaturan</a></li>
+                <li class="nav-item logout-item"><a href="#" id="logout-button" class="nav-link"><span class="material-symbols-rounded nav-icon">logout</span> Logout</a></li>
+            </ul>
+        </nav>
+        
+        <div class="overlay"></div>
+
+        <div class="notification-dropdown hidden" id="notification-dropdown">
+            <div class="notification-dropdown-header">
+                <h3>Notifikasi</h3>
+            </div>
+            <div class="notification-list-dropdown" id="notification-list-dropdown">
+                </div>
+            <div class="notification-dropdown-footer">
+                <a href="#notifikasi" class="view-all-link" id="view-all-notifications-link">Lihat Semua Notifikasi</a>
+            </div>
+        </div>
+
+        <main class="main-content">
+
+           <div id="beranda" class="page active">
+                <div class="page-header">
+                    <h1 class="page-title">Beranda</h1>
+                    <p class="page-subtitle">Lihat overview sistem anda!</p>
+                </div>
+
+                <div class="dashboard-grid grid-cols-1">
+                    <div class="data-card card-status" id="device-status-card">
+                        <div class="card-icon-header"><span class="material-symbols-rounded card-icon">router</span><span class="card-title">Status Perangkat</span></div>
+                        <div class="card-content"><div class="status-indicator-wrapper"><div class="status-indicator" id="device-status-indicator"></div><span class="status-text" id="device-status-text">Mengecek...</span></div></div>
+                    </div>
+                    <a href="#dashboard" class="card-link" data-target-page="dashboard">
+                        <div class="data-card card-battery">
+                            <div class="card-icon-header"><span class="material-symbols-rounded card-icon">battery_charging_full</span><span class="card-title">Battery</span></div>
+                            <div class="card-content"><div class="sub-value-row"><span id="batt-temp-beranda">--</span></div><div class="progress-bar-container"><div class="progress-bar-fill" id="batt-cap-fill-beranda"></div><span class="progress-bar-text" id="batt-cap-text-beranda">--%</span></div></div>
+                        </div>
+                    </a>
+                    <a href="#notifikasi" class="card-link" data-target-page="notifikasi">
+                        <div class="data-card card-notification-summary">
+                            <div class="card-icon-header">
+                                <span class="material-symbols-rounded card-icon">notifications_active</span> <span class="card-title">Ringkasan Notifikasi</span>
+                            </div>
+                            <div class="card-content">
+                                <p class="notification-summary-text" id="notification-summary-text">Memuat ringkasan...</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="page-header" style="margin-top: 10px; display: flex; justify-content: space-between; align-items: center;">
+                    <h2 class="page-title" style="font-size: 1.8em; margin: 0;">Ringkasan Energi</h2>
+                    <select id="beranda-energy-filter" class="filter-btn">
+                        <option value="alltime">Semua Waktu</option>
+                        <option value="today">Hari Ini</option>
+                    </select>
+                </div>
+                <div class="dashboard-grid grid-cols-3">
+                    <a href="#dashboard?scrollto=analisis-historis-section" class="card-link" data-target-page="dashboard">
+                        <div class="data-card card-pln">
+                            <div class="card-icon-header"><span class="material-symbols-rounded card-icon">bolt</span><span class="card-title">Energi PLN</span></div>
+                            <div class="card-content"><div class="main-value"><span id="pln-energy-beranda">--</span><span class="unit">kWh</span></div></div>
+                        </div>
+                    </a>
+                    <a href="#dashboard?scrollto=analisis-historis-section" class="card-link" data-target-page="dashboard">
+                        <div class="data-card card-turbin">
+                            <div class="card-icon-header"><span class="material-symbols-rounded card-icon">airwave</span><span class="card-title">Energi Turbin</span></div>
+                            <div class="card-content"><div class="main-value"><span id="turbin-energy-beranda">--</span><span class="unit">kWh</span></div></div>
+                        </div>
+                    </a>
+                    <a href="#dashboard?scrollto=analisis-historis-section" class="card-link" data-target-page="dashboard">
+                        <div class="data-card card-rumah">
+                            <div class="card-icon-header"><span class="material-symbols-rounded card-icon">home</span><span class="card-title">Konsumsi Rumah</span></div>
+                            <div class="card-content"><div class="main-value"><span id="rumah-energy-beranda">--</span><span class="unit">kWh</span></div></div>
+                        </div>
+                    </a>
+                </div>
+                <div class="data-card ai-chart-container" style="margin-top: 30px;">
+                    <div class="chart-header">
+                        <h4>State of Charge (SOC) & Power Source Timeline</h4>
+                    </div>
+                    <div class="chart-canvas-wrapper">
+                        <canvas id="aiSocChart"></canvas> </div>
+                </div>
+            </div>
+
+            <div id="dashboard" class="page">
+                <div class="page-header">
+                    <h1 class="page-title">Dashboard</h1>
+                    <p class="page-subtitle">Pusat analisis dan monitoring data sistem.</p>
+                </div>
+
+                <h2 class="section-title">Live Monitoring (Data Sesaat)</h2>
+                <div class="dashboard-grid grid-cols-flexible">
+
+                    <div class="data-card card-pln">
+                        <div class="card-icon-header"><span class="material-symbols-rounded card-icon">bolt</span><span class="card-title">PLN</span></div>
+                        <div class="card-content detail-content">
+                            <div class="detail-row"><span>Daya</span><div><span id="pln-watt-detail">--</span><span class="unit">Watt</span></div></div>
+                            <div class="detail-row"><span>Tegangan</span><div><span id="pln-volt-detail">--</span><span class="unit">Volt</span></div></div>
+                            <div class="detail-row"><span>Arus</span><div><span id="pln-ampere-detail">--</span><span class="unit">Ampere</span></div></div>
+                        </div>
+                    </div>
+                    <div class="data-card card-turbin">
+                        <div class="card-icon-header"><span class="material-symbols-rounded card-icon">airwave</span><span class="card-title">Turbin</span></div>
+                        <div class="card-content detail-content">
+                            <div class="detail-row"><span>Daya</span><div><span id="turbin-watt-detail">--</span><span class="unit">Watt</span></div></div>
+                            <div class="detail-row"><span>Tegangan</span><div><span id="turbin-volt-detail">--</span><span class="unit">Volt</span></div></div>
+                            <div class="detail-row"><span>Arus</span><div><span id="turbin-ampere-detail">--</span><span class="unit">Ampere</span></div></div>
+                            <div class="detail-row"><span>Kecep. Angin</span><div><span id="turbin-speed-detail">--</span><span class="unit">m/s</span></div></div>
+                        </div>
+                    </div>
+                    <div class="data-card card-battery">
+                        <div class="card-icon-header"><span class="material-symbols-rounded card-icon">battery_charging_full</span><span class="card-title">Battery</span></div>
+                        <div class="card-content">
+                            <div class="sub-value-row"><span id="batt-temp-detail">--</span></div>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar-fill" id="batt-cap-fill-detail"></div>
+                                <span class="progress-bar-text" id="batt-cap-text-detail">--%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="historical-analysis-wrapper">
+                    <div id="historical-loading-overlay" class="loading-overlay hidden">
+                        <div class="spinner"></div>
+                    </div>
+                    <h2 id="analisis-historis-section" class="section-title" style="margin-top: 40px;">Analisis Historis</h2>
+
+                <div class="data-card historical-filters">
+                    <div class="filter-group">
+                        <button id="filter-btn-today" class="filter-btn active">Hari Ini</button>
+                        <button id="filter-btn-alltime" class="filter-btn">Semua Waktu</button>
+                        <button id="filter-btn-custom" class="filter-btn">Rentang Waktu</button>
+                    </div>
+                    <div class="custom-filter-controls hidden">
+                        <input type="date" id="filter-date-start">
+                        <select id="filter-hour-start"></select>
+                        <span>s/d</span>
+                        <input type="date" id="filter-date-end">
+                        <select id="filter-hour-end"></select>
+                        <button id="apply-filter-button">Terapkan</button>
+                    </div>
+                    <button id="download-pdf-button">Unduh PDF</button>
+                </div>
+                
+                <div class="dashboard-grid grid-cols-3" style="margin-top: 30px;">
+                    <div class="data-card card-pln"><div class="card-icon-header"><span class="material-symbols-rounded card-icon">bolt</span><span class="card-title">Total Energi PLN</span></div><div class="card-content detail-content"><div class="detail-row"><span>Energi</span><div><span id="pln-energy-detail">--</span><span class="unit">kWh</span></div></div></div></div>
+                    <div class="data-card card-turbin"><div class="card-icon-header"><span class="material-symbols-rounded card-icon">airwave</span><span class="card-title">Total Energi Turbin</span></div><div class="card-content detail-content"><div class="detail-row"><span>Energi</span><div><span id="turbin-energy-detail">--</span><span class="unit">kWh</span></div></div></div></div>
+                    <div class="data-card card-rumah"><div class="card-icon-header"><span class="material-symbols-rounded card-icon">home</span><span class="card-title">Total Konsumsi Rumah</span></div><div class="card-content detail-content"><div class="detail-row"><span>Energi</span><div><span id="rumah-energy-detail">--</span><span class="unit">kWh</span></div></div></div></div>
+                </div>
+                
+                <div class="data-card chart-container">
+                    <div class="chart-header">
+                        <h4>Grafik Data</h4>
+                    </div>
+
+                    <div class="main-chart-controls">
+                        <span>Tampilkan Data:</span>
+                        <label><input type="checkbox" name="mainChartData" value="plnWattage" checked> Daya PLN</label>
+                        <label><input type="checkbox" name="mainChartData" value="turbineWattage" checked> Daya Turbin</label>
+                        <label><input type="checkbox" name="mainChartData" value="windSpeed"> Kecep. Angin</label>
+                    </div>
+                    <div class="chart-canvas-wrapper">
+                        <canvas id="powerChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="data-card history-table-container">
+                    <h4>Tabel Data Historis</h4>
+                    <div class="column-filter-controls">
+                        <span>Tampilkan Kolom:</span>
+                        <label><input type="checkbox" value="energyKwh" checked> Energi (kWh)</label>
+                        <label><input type="checkbox" value="plnWattage" checked> Daya PLN</label>
+                        <label><input type="checkbox" value="turbineWattage" checked> Daya Turbin</label>
+                        <label><input type="checkbox" value="voltageAC" checked> Tegangan</label>
+                        <label><input type="checkbox" value="currentAC" checked> Arus</label>
+                        <label><input type="checkbox" value="windSpeed" checked> Kecep. Angin</label>
+                        <label><input type="checkbox" value="batteryTemperature" checked> Suhu Baterai</label>
+                    </div>
+                    
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Waktu</th>
+                                    <th>Energi (kWh)</th><th>Daya PLN (W)</th>
+                                    <th>Daya Turbin (W)</th>
+                                    <th>Tegangan (V)</th>
+                                    <th>Arus (A)</th>
+                                    <th>Kecep. Angin (m/s)</th>
+                                    <th>Suhu Baterai (°C)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="history-table-body">
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="data-card analysis-chart-container">
+                    <h4>Grafik Analisis Korelasi</h4>
+                    <div class="analysis-controls">
+                        <label>Sumbu X:</label>
+                        <select id="xAxis-select"></select>
+                        <label>Sumbu Y:</label>
+                        <select id="yAxis-select"></select>
+                        <button id="generate-analysis-chart">Buat Grafik</button>
+                    </div>
+                    <div class="chart-canvas-wrapper">
+                        <canvas id="analysisChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+            
+            <div id="notifikasi" class="page">
+                <div class="page-header"><h1 class="page-title">Riwayat Notifikasi</h1></div>
+                <div class="notification-page-controls">
+                    <button class="clear-button" id="clear-notifications-button">Bersihkan Semua</button>
+                </div>
+                <div id="notification-list-container" class="notification-list"></div>
+            </div>
+            
+            <div id="maintenance" class="page">
+                <div class="page-header"><h1 class="page-title">Panduan Perawatan</h1></div>
+                <div class="maintenance-section">
+                    <h2>Jadwal Preventive Maintenance</h2>
+                    <div class="schedule-group"><h3>Setiap 1 Bulan</h3><ul class="task-list"><li>Pembersihan bilah turbin angin</li><li>Periksa terminal baterai</li></ul></div>
+                </div>
+                <div class="maintenance-section">
+                    <h2>Panduan Corrective Maintenance</h2>
+                    <div class="corrective-case" id="troubleshoot-offline">
+                        <h4>📡 Peringatan: Perangkat Offline</h4><div class="symptoms"><strong>Gejala:</strong> Kartu status di Beranda berwarna merah dan bertuliskan "Offline". Data di dashboard tidak diperbarui.</div><div class="solution-steps"><strong>Langkah Penanganan:</strong><ol><li><strong>Periksa Sumber Listrik:</strong> Pastikan perangkat Arduino/ESP8266 menerima daya.</li><li><strong>Periksa Koneksi WiFi:</strong> Pastikan jaringan WiFi Anda aktif dan tidak berubah.</li><li><strong>Restart Perangkat:</strong> Cabut dan colokkan kembali kabel USB perangkat untuk me-restart.</li></ol></div></div>
+                    <div class="corrective-case" id="corrective-temp-tinggi"><h4>🔥 Peringatan: Temperatur Baterai Tinggi</h4><div class="symptoms"><strong>Gejala:</strong> Notifikasi muncul, nilai temperatur > 50°C.</div><div class="solution-steps"><strong>Langkah Penanganan:</strong><ol><li><strong>Identifikasi Penyebab:</strong> Periksa sirkulasi udara di sekitar baterai.</li><li><strong>Kurangi Beban:</strong> Matikan sementara beban listrik yang tidak esensial.</li><li><strong>Pemeriksaan Fisik:</strong> Pastikan kipas pendingin (jika ada) berfungsi.</li></ol></div></div>
+                    <div class="corrective-case" id="corrective-wind-kencang">
+                        <h4>💨 Peringatan: Angin Terlalu Kencang</h4>
+                        <div class="symptoms"><strong>Gejala:</strong> Notifikasi muncul, nilai kecepatan angin > 25 m/s.</div>
+                        <div class="solution-steps">
+                            <strong>Langkah Penanganan:</strong>
+                            <ol>
+                                <li><strong>Aktifkan Sistem Rem:</strong> Jika turbin memiliki sistem pengereman, aktifkan untuk menghentikan putaran.</li>
+                                <li><strong>Arahkan Ulang (Furling):</strong> Jika turbin memiliki mekanisme furling, pastikan ia bekerja untuk membelokkan bilah dari arah angin.</li>
+                                <li><strong>Pantau Cuaca:</strong> Cek prakiraan cuaca lokal untuk melihat berapa lama kondisi angin ekstrem akan berlangsung.</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="pengaturan" class="page">
+                <div class="page-header"><h1 class="page-title">Pengaturan</h1></div>
+                <div class="settings-section">
+                    <h2>Profil Pengguna</h2>
+                    <div class="setting-item"><label>Nama Pengguna:</label><span id="settings-username">...</span></div>
+                    <button class="action-button logout-button-desktop" id="logout-button-desktop">Logout</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="auth-container" class="hidden">
+        <div class="auth-card" id="login-card"><div class="logo auth-logo"><img src="logo-tim.png" alt="LATTE Logo"><span>LATTE</span></div><h2>Login</h2><form id="login-form"><input type="text" id="login-username" placeholder="Username" required><input type="password" id="login-password" placeholder="Password" required><button type="submit">Login</button></form><p>Belum punya akun? <a href="#" id="show-register">Registrasi di sini</a></p></div>
+        <div class="auth-card hidden" id="register-card"><div class="logo auth-logo"><img src="logo-tim.png" alt="LATTE Logo"><span>LATTE</span></div><h2>Registrasi</h2><form id="register-form"><input type="text" id="register-username" placeholder="Username" required><input type="password" id="register-password" placeholder="Password" required><input type="text" id="register-code" placeholder="Kode Registrasi Produk" required><button type="submit">Registrasi</button></form><p>Sudah punya akun? <a href="#" id="show-login">Login di sini</a></p></div>
+    </div>
+
+    <script src="dummy_data.js"></script><script src="script.js"></script>
+</body>
+</html>
